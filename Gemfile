@@ -9,8 +9,3 @@ gem 'pg'
 gem 'roda'
 gem 'sequel'
 gem 'tilt'
-
-group :development do
-  gem 'pry-byebug'
-  gem 'rubocop'
-end
