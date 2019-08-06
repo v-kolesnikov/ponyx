@@ -9,7 +9,7 @@
         <%= id %>
       </p>
       <p>
-        <%= xpath %>
+        <%= CGI.escape_html(xpath) %>
       </p>
     </div>
   <% end %>
