@@ -3,8 +3,7 @@
 require 'dotenv'
 require 'roda'
 require 'sequel'
-
-require 'pry'
+require 'tilt'
 
 Dotenv.load
 
@@ -50,11 +49,13 @@ module Ponyx
     plugin :multi_run
     plugin :public
 
+    plugin :render, engine: 'erb', views: 'views'
+
     opts[:root] = File.dirname(__FILE__)
 
     route do |routes|
       routes.root do
-        'Ponyx'
+        view('index')
       end
     end
   end
