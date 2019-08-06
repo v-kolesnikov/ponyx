@@ -28,6 +28,24 @@ module Ponyx
     end
   end
 
+  class Repository
+    attr_reader :db, :root
+
+    def initialize(db: DB, root: :onix)
+      @db = db
+      @root = db[root]
+    end
+
+    # @param reference [String] Record reference
+    def by_reference(reference)
+      xpath = %('ns:ONIXMessage/ns:Product[ns:RecordReference="#{reference}"]')
+      nsmap = %(ARRAY[ARRAY['ns', 'http://ns.editeur.org/onix/3.0/reference']])
+      root
+        .select(:id, Sequel.lit("xpath(#{xpath}, message, #{nsmap})"))
+        .where(Sequel.lit("xpath_exists(#{xpath}, message, #{nsmap})"))
+    end
+  end
+
   class App < ::Roda
     plugin :multi_run
     plugin :public
