@@ -1,16 +1,13 @@
 <div>
   <form action="" method="POST">
+    <label>Record reference</label>
     <input name="reference" type=text/>
   </form>
 
-  <% items.each do |id:, xpath:| %>
+  <% items.each do |id:, sent_at:, product:| %>
     <div>
-      <p>
-        <%= id %>
-      </p>
-      <p>
-        <%= CGI.escape_html(xpath) %>
-      </p>
+      <h4>Sent at <%= sent_at %>, ID <%= id %></h4>
+      <pre><code><%= CGI.escape_html(product) %></code></pre>
     </div>
   <% end %>
 </div>

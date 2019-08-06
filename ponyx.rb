@@ -42,8 +42,13 @@ module Ponyx
     def by_reference(reference)
       xpath = %('ns:ONIXMessage/ns:Product[ns:RecordReference="#{reference}"]')
       nsmap = %(ARRAY[ARRAY['ns', 'http://ns.editeur.org/onix/3.0/reference']])
+      xpath_sent_at = %('ns:ONIXMessage/ns:Header/ns:SentDateTime/text()')
       root
-        .select(:id, Sequel.lit("xpath(#{xpath}, message, #{nsmap})"))
+        .select(
+          :id,
+          Sequel.lit("(xpath(#{xpath_sent_at}, message, #{nsmap}))[1]::text as sent_at"),
+          Sequel.lit("(xpath(#{xpath}, message, #{nsmap}))[1]::text as product")
+        )
         .where(Sequel.lit("xpath_exists(#{xpath}, message, #{nsmap})"))
     end
   end
