@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'dotenv'
+require 'logger'
 require 'roda'
 require 'sequel'
 require 'tilt'
@@ -9,6 +10,7 @@ Dotenv.load
 
 module Ponyx
   DB = Sequel.connect(ENV.fetch('PONYX_DATABASE_URL'))
+  DB.loggers << Logger.new(STDOUT)
 
   def self.create_table
     DB.create_table(:onix) do
@@ -55,8 +57,18 @@ module Ponyx
 
     route do |routes|
       routes.root do
-        view('index')
+        view('index', locals: { items: [] })
       end
+
+      routes.post '' do
+        reference = routes.params['reference']
+        items = reference ? repository.by_reference(reference) : []
+        view('index', locals: { items: items })
+      end
+    end
+
+    def repository
+      @repository ||= Repository.new
     end
   end
 end

@@ -1,3 +1,16 @@
 <div>
-  <h1>Ponyx!</h1>
+  <form action="" method="POST">
+    <input name="reference" type=text/>
+  </form>
+
+  <% items.each do |id:, xpath:| %>
+    <div>
+      <p>
+        <%= id %>
+      </p>
+      <p>
+        <%= xpath %>
+      </p>
+    </div>
+  <% end %>
 </div>
