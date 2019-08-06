@@ -9,7 +9,7 @@ require 'tilt'
 Dotenv.load
 
 module Ponyx
-  DB = Sequel.connect(ENV.fetch('PONYX_DATABASE_URL'))
+  DB = Sequel.connect(ENV.fetch('DATABASE_URL'))
   DB.loggers << Logger.new(STDOUT)
 
   def self.create_table
@@ -21,7 +21,7 @@ module Ponyx
   end
 
   def self.import_data
-    files = Dir[ENV.fetch('PONYX_ONIX_DATA_DIR')]
+    files = Dir[ENV.fetch('ONIX_DATA_DIR')]
     files.each do |file_name|
       File.open(file_name) do |file|
         DB[:onix].insert(uri: file_name, message: file.read)
