@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - 2.6.3
+services:
+  - postgresql
+before_install:
+  - psql -c 'create database ponyx;' -U postgres
+script: bundle exec rspec spec/

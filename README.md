@@ -1,5 +1,7 @@
 # Ponyx 🐴
 
+[![Build Status](https://travis-ci.org/v-kolesnikov/ponyx.svg?branch=master)](https://travis-ci.org/v-kolesnikov/ponyx)
+
 Ponyx is a web-application for explore [ONIX](https://www.editeur.org/8/ONIX/) data from PostgreSQL database.
 
 ## Objective
