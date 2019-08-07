@@ -20,5 +20,6 @@ before_install:
 
 before_script:
   - ruby -I. -rbundler/setup -rponyx -e 'Ponyx.create_table'
+  - ruby -I. -rbundler/setup -rponyx -e 'Ponyx.create_index'
 
 script: bundle exec rspec spec/
