@@ -21,12 +21,9 @@ module Ponyx
     end
   end
 
-  def self.import_data
-    files = Dir[ENV.fetch('ONIX_DATA_DIR')]
-    files.each do |file_name|
-      File.open(file_name) do |file|
-        DB[:onix].insert(uri: file_name, message: file.read)
-      end
+  def self.import_data(path: ENV.fetch('ONIX_DATA_DIR'))
+    Dir[path].each do |file_name|
+      DB[:onix].insert(uri: file_name, message: File.read(file_name))
     end
   end
 

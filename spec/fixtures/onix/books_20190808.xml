@@ -1,0 +1,9 @@
+<ONIXMessage xmlns="http://ns.editeur.org/onix/3.0/reference" release="3.0">
+<Header>
+  <SentDateTime>20190808T090000Z</SentDateTime>
+</Header>
+<Product>
+  <RecordReference>2</RecordReference>
+  <NotificationType>03</NotificationType>
+</Product>
+</ONIXMessage>
