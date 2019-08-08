@@ -21,6 +21,15 @@ module Ponyx
     end
   end
 
+  def self.create_index
+    DB.execute(<<~SQL)
+      create index product_record_reference_index
+        on onix
+        using gin (((xpath('ns:ONIXMessage/ns:Product/ns:RecordReference/text()', message,
+                             ARRAY [ARRAY ['ns', 'http://ns.editeur.org/onix/3.0/reference']])) :: text []));
+    SQL
+  end
+
   def self.import_data(path: ENV.fetch('ONIX_DATA_DIR'))
     Dir[path].each do |file_name|
       DB[:onix].insert(uri: file_name, message: File.read(file_name))
@@ -37,16 +46,16 @@ module Ponyx
 
     # @param reference [String] Record reference
     def by_reference(reference)
-      xpath = %('ns:ONIXMessage/ns:Product[ns:RecordReference="#{reference}"]')
       nsmap = %(ARRAY[ARRAY['ns', 'http://ns.editeur.org/onix/3.0/reference']])
+      xpath_product = %('ns:ONIXMessage/ns:Product[ns:RecordReference="#{reference}"]')
       xpath_sent_at = %('ns:ONIXMessage/ns:Header/ns:SentDateTime/text()')
       root
         .select(
           :id,
           Sequel.lit("(xpath(#{xpath_sent_at}, message, #{nsmap}))[1]::text as sent_at"),
-          Sequel.lit("(xpath(#{xpath}, message, #{nsmap}))[1]::text as product")
+          Sequel.lit("(xpath(#{xpath_product}, message, #{nsmap}))[1]::text as product")
         )
-        .where(Sequel.lit("xpath_exists(#{xpath}, message, #{nsmap})"))
+        .where(Sequel.lit(%((xpath('ns:ONIXMessage/ns:Product/ns:RecordReference/text()', message, #{nsmap})) :: text [] @> array['#{reference}'])))
     end
   end
 
