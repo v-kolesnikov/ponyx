@@ -1,8 +1,24 @@
 language: ruby
+
 rvm:
   - 2.6.3
-services:
-  - postgresql
+
+addons:
+  postgresql: '11.4'
+
 before_install:
+  - sudo apt-get update
+  - sudo apt-get --yes remove postgresql\*
+  - sudo apt-get install -y postgresql-11 postgresql-client-11
+  - sudo cp /etc/postgresql/{9.6,11}/main/pg_hba.conf
+  - sudo service postgresql restart 11
+
+  - psql -c 'create extension xml2;' -U postgres
   - psql -c 'create database ponyx;' -U postgres
+
+  - gem install bundler
+
+before_script:
+  - ruby -I. -rbundler/setup -rponyx -e 'Ponyx.create_table'
+
 script: bundle exec rspec spec/
