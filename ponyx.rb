@@ -60,9 +60,6 @@ module Ponyx
   end
 
   class App < ::Roda
-    plugin :multi_run
-    plugin :public
-
     plugin :render, engine: 'erb', views: 'views'
 
     opts[:root] = File.dirname(__FILE__)
@@ -74,7 +71,7 @@ module Ponyx
 
       routes.post '' do
         reference = routes.params['reference']
-        items = reference ? repository.by_reference(reference) : []
+        items = reference ? repository.by_reference(reference).to_a : []
         view('index', locals: { items: items })
       end
     end
