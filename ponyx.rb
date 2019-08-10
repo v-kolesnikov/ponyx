@@ -5,7 +5,6 @@ require 'dotenv'
 require 'logger'
 require 'roda'
 require 'sequel'
-require 'tilt'
 
 Dotenv.load
 
