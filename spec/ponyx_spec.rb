@@ -28,11 +28,11 @@ RSpec.describe Ponyx::Repository, '#by_reference' do
   it 'restrics rows by XPath and array inclusion' do
     aggregate_failures do
       expect(repo.by_reference('1').to_a.map { |sent_at:, **| sent_at })
-        .to match_array %w[20190807T090000Z 20190809T090000Z]
+        .to eq %w[20190807T090000Z 20190809T090000Z]
       expect(repo.by_reference('2').to_a.map { |sent_at:, **| sent_at })
-        .to match_array %w[20190807T090000Z 20190808T090000Z]
+        .to eq %w[20190807T090000Z 20190808T090000Z]
       expect(repo.by_reference('3').to_a.map { |sent_at:, **| sent_at })
-        .to match_array %w[20190809T090000Z]
+        .to eq %w[20190809T090000Z]
     end
   end
 
@@ -52,6 +52,6 @@ RSpec.describe Ponyx::Repository, '#by_reference' do
         </Product>
       MESSAGE
     ]
-    expect(result).to match_array(expected)
+    expect(result).to eq(expected)
   end
 end
