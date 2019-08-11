@@ -55,6 +55,7 @@ module Ponyx
           Sequel.lit("(xpath(#{xpath_product}, message, #{nsmap}))[1]::text as product")
         )
         .where(Sequel.lit(%((xpath('ns:ONIXMessage/ns:Product/ns:RecordReference/text()', message, #{nsmap})) :: text [] @> array['#{reference}'])))
+        .order(:sent_at)
     end
   end
 
